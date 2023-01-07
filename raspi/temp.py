@@ -1,5 +1,7 @@
+import datetime
 import smbus2 as smbus
 import time
+
 
 # I2C設定
 i2c = smbus.SMBus(1)
@@ -18,7 +20,6 @@ ret = i2c.read_byte_data(address, 0x71)
 # if ret != 0x18:
     # initialization process
 
-
 # トリガ測定コマンド送信
 time.sleep(0.01)
 i2c.write_i2c_block_data(address, 0x00, set)
@@ -36,7 +37,8 @@ hum = hum / 2**20 * 100
 tmp = tmp / 2**20 * 200 - 50
 
 # 表示
-print("hum: " + str(hum))
-print("tmp: " + str(tmp))
+now = datetime.datetime.now()
 
+# CSV で表示（時間・気温・湿度）
+print(f"{str(now)},{str(tmp)},{str(hum)}")
 time.sleep(1)
